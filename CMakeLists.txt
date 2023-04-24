@@ -4,4 +4,4 @@ set(CXX_STANDARD_REQUIRED ON)
 
 project(playground)
 
-add_executable(main main.cpp)
+add_executable(main src/main.cpp)
