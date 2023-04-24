@@ -47,8 +47,8 @@ IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
     // TODO: add size complatibility
     IntMatrix result(*this);
-    for (int i = 0; i < result._data.size(); ++i) {
-        for (int j = 0; j < result._data.size(); ++j) {
+    for (size_t i = 0; i < result._data.size(); ++i) {
+        for (size_t j = 0; j < result._data.size(); ++j) {
             result._data[i][j] += rhs._data[i][j];
         }
     }
@@ -59,8 +59,8 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
     // TODO: add size complatibility
     IntMatrix result(*this);
     if (this->_data.size() != )
-    for (int i = 0; i < result._data.size(); ++i) {
-        for (int j = 0; j < result._data.size(); ++j) {
+    for (size_t i = 0; i < result._data.size(); ++i) {
+        for (size_t j = 0; j < result._data.size(); ++j) {
             result._data[i][j] -= rhs._data[i][j];
         }
     }
