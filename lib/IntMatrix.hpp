@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 
-enum Operation {
+enum class Operation {
     ADDITION,
     SUBSTRACTION,
     MULTIPLICATION
@@ -47,7 +47,7 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std:
 }
 
 bool IntMatrix::isCompatible(const IntMatrix& rhs, Operation operation) const {
-    if (operation != MULTIPLICATION) {
+    if (operation != Operation::MULTIPLICATION) {
         return this->columns == rhs.columns && this->rows == rhs.rows;
     } else {
         return this->rows == rhs.columns && this->columns == rhs.rows;
@@ -75,7 +75,7 @@ IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
 }
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
-    if (!isCompatible(rhs, ADDITION)) {
+    if (!isCompatible(rhs, Operation::ADDITION)) {
         std::runtime_error("addition operation cannot be performed on unmatching matrixes");
     }
     IntMatrix result(*this);
@@ -88,7 +88,7 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
 }
 
 IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
-    if (!isCompatible(rhs, SUBSTRACTION)) {
+    if (!isCompatible(rhs, Operation::SUBSTRACTION)) {
         std::runtime_error("substraction operation cannot be performed on unmatching matrixes");
     }
     IntMatrix result(*this);
@@ -102,7 +102,7 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
 
 
 IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
-    if (!isCompatible(rhs, MULTIPLICATION)) {
+    if (!isCompatible(rhs, Operation::MULTIPLICATION)) {
         std::runtime_error("multiplication operation cannot be performed on unmatching matrixes");
     }
 }
