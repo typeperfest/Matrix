@@ -33,24 +33,34 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std:
         }
     }
     this->_data = rhs;
+    this->columns = firstSize;
+    this->rows = rhs.size();
 }
 
 IntMatrix::IntMatrix(const IntMatrix&& rhs) {
     this->_data = std::move(rhs._data);
+    this->rows = rhs.rows;
+    this->columns = rhs.columns;
 }
 
 IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
     _data = rhs._data;
+    this->rows = rhs.rows;
+    this->rows = rhs.columns;
     return *this;
 }
 
 IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
     this->_data = std::move(rhs._data);
+    this->rows = rhs.rows;
+    this->rows = rhs.columns;
     return *this;
 }
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
-    // TODO: add size complatibility
+    if (this->columns != rhs.columns || this->rows != rhs.rows) {
+        std::runtime_error("addition operation cannot be performed on unmatching matrixes");
+    }
     IntMatrix result(*this);
     for (size_t i = 0; i < result._data.size(); ++i) {
         for (size_t j = 0; j < result._data.size(); ++j) {
@@ -61,7 +71,9 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
 }
 
 IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
-    // TODO: add size complatibility
+    if (this->columns != rhs.columns || this->rows != rhs.rows) {
+        std::runtime_error("substraction operation cannot be performed on unmatching matrixes");
+    }
     IntMatrix result(*this);
     if (this->_data.size() != )
     for (size_t i = 0; i < result._data.size(); ++i) {
