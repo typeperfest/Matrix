@@ -52,7 +52,7 @@ bool IntMatrix::checkCompatibility(IntMatrix& rhs, Operation operation) const {
         }
     } else {
         if (this->rows != rhs.columns || this->columns != rhs.rows) {
-            std::runtime_error("multiplication operation cannot be performed on unmatching matrixes")
+            std::runtime_error("multiplication operation cannot be performed on unmatching matrixes");
         }
     }
 }
