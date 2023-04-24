@@ -4,6 +4,7 @@
 
 class IntMatrix {
     std::vector<std::vector<int>> _data;
+    size_t rows, columns;
 
 public:
     IntMatrix() = default;
