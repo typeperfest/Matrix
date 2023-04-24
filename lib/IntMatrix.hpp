@@ -12,7 +12,7 @@ class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
 
-    bool checkCompatibility(IntMatrix& rhs, Operation operation) const;
+    bool isCompatible(IntMatrix& rhs, Operation operation) const;
 
 public:
     IntMatrix() = default;
