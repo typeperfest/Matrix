@@ -2,26 +2,61 @@
 #include <vector>
 #include <iostream>
 
-template <typename T>
-class Matrix {
-    std::vector<std::vector<T>> _data;
+class IntMatrix {
+    std::vector<std::vector<int>> _data;
     size_t _rows, _columns;
 
 public:
-    Matrix();
-    explicit Matrix(std::vector<std::vector<T>> rhs);
-    Matrix(const Matrix<T>& rhs);
+    IntMatrix();
+    explicit IntMatrix(std::vector<std::vector<int>>& rhs); 
+    IntMatrix(const IntMatrix& rhs);
+    IntMatrix(const IntMatrix&& rhs);
 
 public:
-    Matrix<T> operator + (const Matrix<T>& rhs);
-    Matrix<T> operator - (const Matrix<T>& rhs);
-    Matrix<T> operator * (const Matrix<T>& rhs);
+    IntMatrix& operator = (const IntMatrix& rhs);
+    IntMatrix& operator = (const IntMatrix&& rhs); 
 
-    bool operator == (const Matrix<T> rhs) const;
-    bool operator != (const Matrix<T> rhs) const;
+public:
+    IntMatrix operator + (const IntMatrix& rhs);
+    IntMatrix operator - (const IntMatrix& rhs);
+    IntMatrix operator * (const IntMatrix& rhs);
+
+    bool operator == (const IntMatrix& rhs) const;
+    bool operator != (const IntMatrix& rhs) const;
 };
 
-template <typename T>
-Matrix<T>::Matrix() {
-    
+IntMatrix::IntMatrix() {
+
+}
+
+IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) {
+
+}
+
+IntMatrix::IntMatrix(const IntMatrix& rhs) {
+
+}
+
+IntMatrix::IntMatrix(const IntMatrix&& rhs) {
+
+}
+
+IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
+
+}
+
+IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
+
+}
+
+IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
+
+}
+
+IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
+
+}
+
+IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
+
 }
