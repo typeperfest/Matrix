@@ -25,9 +25,14 @@ public:
     bool operator != (const IntMatrix& rhs) const;
 };
 
-// TODO: implement every vector size comparison
-IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) {
-
+IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std::vector<int>>(0)) {
+    size_t firstSize = rhs[0].size();
+    for (size_t i = 0; i < rhs.size(); ++i) {
+        if (rhs[i].size() != firstSize) {
+            throw std::runtime_error("matrix does not have rectangle format");
+        }
+    }
+    this->_data = rhs;
 }
 
 IntMatrix::IntMatrix(const IntMatrix&& rhs) {
