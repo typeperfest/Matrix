@@ -1,6 +1,7 @@
 // typeperfest 2023
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 enum class Operation {
     ADDITION,
@@ -11,6 +12,8 @@ enum class Operation {
 class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
+    // TODO: implement funcion
+    int calculateMultipliedMember(size_t row, size_t column);
 
 // Constructors
 public:
@@ -110,5 +113,12 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
 IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
     if (!isCompatible(rhs, Operation::MULTIPLICATION)) {
         std::runtime_error("multiplication operation cannot be performed on unmatching matrixes");
+    }
+    IntMatrix result(this->rows, rhs.columns);
+    for (size_t i = 0; i < this->rows; ++i) {
+        for (size_t j = 0; j < rhs.columns; ++j) {
+            // TODO: Attach function call to result
+            calculateMultipliedMember(i, j);
+        }
     }
 }
