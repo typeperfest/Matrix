@@ -12,16 +12,19 @@ class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
 
+// Constructors
 public:
     IntMatrix() = default;
     explicit IntMatrix(std::vector<std::vector<int>>& rhs); 
     IntMatrix(const IntMatrix& rhs) = default;
     IntMatrix(const IntMatrix&& rhs) noexcept;
 
+// Assignation operators
 public:
     IntMatrix& operator = (const IntMatrix& rhs);
     IntMatrix& operator = (const IntMatrix&& rhs) noexcept; 
 
+// Arithmetic operators
 public:
     IntMatrix operator + (const IntMatrix& rhs);
     IntMatrix operator - (const IntMatrix& rhs);
@@ -30,6 +33,7 @@ public:
     bool operator == (const IntMatrix& rhs) const;
     bool operator != (const IntMatrix& rhs) const;
 
+// Helper functions
 public:
     bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
 };
