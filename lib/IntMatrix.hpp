@@ -12,7 +12,7 @@ class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
 
-    bool isCompatible(IntMatrix& rhs, Operation operation) const;
+    bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
 
 public:
     IntMatrix() = default;
@@ -45,7 +45,7 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std:
     this->rows = rhs.size();
 }
 
-bool IntMatrix::isCompatible(IntMatrix& rhs, Operation operation) const {
+bool IntMatrix::isCompatible(const IntMatrix& rhs, Operation operation) const {
     if (operation != MULTIPLICATION) {
         return this->columns == rhs.columns && this->rows == rhs.rows;
     } else {
