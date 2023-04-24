@@ -77,7 +77,7 @@ IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
 }
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
-    if (this->columns != rhs.columns || this->rows != rhs.rows) {
+    if (!isCompatible(rhs, ADDITION)) {
         std::runtime_error("addition operation cannot be performed on unmatching matrixes");
     }
     IntMatrix result(*this);
@@ -90,7 +90,7 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
 }
 
 IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
-    if (this->columns != rhs.columns || this->rows != rhs.rows) {
+    if (!isCompatible(rhs, SUBSTRACTION)) {
         std::runtime_error("substraction operation cannot be performed on unmatching matrixes");
     }
     IntMatrix result(*this);
@@ -105,5 +105,7 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
 
 
 IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
-
+    if (!isCompatible(rhs, MULTIPLICATION)) {
+        std::runtime_error("multiplication operation cannot be performed on unmatching matrixes");
+    }
 }
