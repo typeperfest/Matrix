@@ -39,11 +39,23 @@ IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
 }
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
-    IntMatrix result();
+    IntMatrix result(*this);
+    for (int i = 0; i < result._data.size(); ++i) {
+        for (int j = 0; j < result._data.size(); ++j) {
+            result._data[i][j] += rhs._data[i][j];
+        }
+    }
+    return result;
 }
 
 IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
-
+    IntMatrix result(*this);
+    for (int i = 0; i < result._data.size(); ++i) {
+        for (int j = 0; j < result._data.size(); ++j) {
+            result._data[i][j] -= rhs._data[i][j];
+        }
+    }
+    return result;
 }
 
 IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
