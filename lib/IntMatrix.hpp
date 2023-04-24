@@ -109,7 +109,6 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
     return result;
 }
 
-
 IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
     if (!isCompatible(rhs, Operation::MULTIPLICATION)) {
         std::runtime_error("multiplication operation cannot be performed on unmatching matrixes");
