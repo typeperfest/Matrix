@@ -18,6 +18,7 @@ public:
     explicit IntMatrix(std::vector<std::vector<int>>& rhs); 
     IntMatrix(const IntMatrix& rhs) = default;
     IntMatrix(const IntMatrix&& rhs) noexcept;
+    IntMatrix(const size_t rows, const size_t columns);
 
 // Assignation operators
 public:
@@ -50,6 +51,9 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std:
     this->rows = rhs.size();
 }
 
+IntMatrix::IntMatrix(const size_t rows, const size_t columns) : 
+    _data(std::vector<std::vector<int>> ( rows, std::vector<int>(columns) )) {}
+ 
 bool IntMatrix::isCompatible(const IntMatrix& rhs, Operation operation) const {
     if (operation != Operation::MULTIPLICATION) {
         return this->columns == rhs.columns && this->rows == rhs.rows;
