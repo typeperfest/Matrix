@@ -92,7 +92,6 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
         std::runtime_error("substraction operation cannot be performed on unmatching matrixes");
     }
     IntMatrix result(*this);
-    if (this->_data.size() != )
     for (size_t i = 0; i < result._data.size(); ++i) {
         for (size_t j = 0; j < result._data.size(); ++j) {
             result._data[i][j] -= rhs._data[i][j];
