@@ -12,8 +12,6 @@ class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
 
-    bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
-
 public:
     IntMatrix() = default;
     explicit IntMatrix(std::vector<std::vector<int>>& rhs); 
