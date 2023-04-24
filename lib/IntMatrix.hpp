@@ -31,6 +31,9 @@ public:
 
     bool operator == (const IntMatrix& rhs) const;
     bool operator != (const IntMatrix& rhs) const;
+
+public:
+    bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
 };
 
 IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std::vector<int>>(0)) {
