@@ -8,7 +8,7 @@ class IntMatrix {
 
 public:
     IntMatrix() = default;
-    explicit IntMatrix(std::vector<std::vector<int>>& rhs) : _data(rhs) {}; 
+    explicit IntMatrix(std::vector<std::vector<int>>& rhs); 
     IntMatrix(const IntMatrix& rhs) = default;
     IntMatrix(const IntMatrix&& rhs) noexcept;
 
@@ -25,6 +25,11 @@ public:
     bool operator != (const IntMatrix& rhs) const;
 };
 
+// TODO: implement every vector size comparison
+IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) {
+
+}
+
 IntMatrix::IntMatrix(const IntMatrix&& rhs) {
     this->_data = std::move(rhs._data);
 }
@@ -40,6 +45,7 @@ IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
 }
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
+    // TODO: add size complatibility
     IntMatrix result(*this);
     for (int i = 0; i < result._data.size(); ++i) {
         for (int j = 0; j < result._data.size(); ++j) {
@@ -50,7 +56,9 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
 }
 
 IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
+    // TODO: add size complatibility
     IntMatrix result(*this);
+    if (this->_data.size() != )
     for (int i = 0; i < result._data.size(); ++i) {
         for (int j = 0; j < result._data.size(); ++j) {
             result._data[i][j] -= rhs._data[i][j];
@@ -58,6 +66,7 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
     }
     return result;
 }
+
 
 IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
 
