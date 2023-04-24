@@ -45,15 +45,11 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std:
     this->rows = rhs.size();
 }
 
-bool IntMatrix::checkCompatibility(IntMatrix& rhs, Operation operation) const {
+bool IntMatrix::isCompatible(IntMatrix& rhs, Operation operation) const {
     if (operation != MULTIPLICATION) {
-        if (this->columns != rhs.columns || this->rows != rhs.rows) {
-            std::runtime_error("Compatibility violation");
-        }
+        return this->columns == rhs.columns && this->rows == rhs.rows;
     } else {
-        if (this->rows != rhs.columns || this->columns != rhs.rows) {
-            std::runtime_error("multiplication operation cannot be performed on unmatching matrixes");
-        }
+        return this->rows == rhs.columns && this->columns == rhs.rows;
     }
 }
 
