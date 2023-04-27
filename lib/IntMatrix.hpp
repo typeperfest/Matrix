@@ -19,6 +19,7 @@ class IntMatrix {
 public:
     IntMatrix() = default;
     explicit IntMatrix(std::vector<std::vector<int>>& rhs); 
+    // TODO: check if defautt is valid solution here
     IntMatrix(const IntMatrix& rhs) = default;
     IntMatrix(const IntMatrix&& rhs) noexcept;
     IntMatrix(const size_t rows, const size_t columns) : 
