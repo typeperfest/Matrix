@@ -13,7 +13,7 @@ class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
     // TODO: implement funcion
-    int calculateMultipliedMember(size_t row, size_t column);
+    int calculateMultipliedMember(const IntMatrix& other, const size_t row, const size_t column);
 
 // Constructors
 public:
@@ -55,7 +55,7 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std:
     this->rows = rhs.size();
 }
  
-bool IntMatrix::isCompatible(const IntMatrix& rhs, Operation operation) const {
+bool IntMatrix::isCompatible(const IntMatrix& rhs, const Operation operation) const {
     if (operation != Operation::MULTIPLICATION) {
         return this->columns == rhs.columns && this->rows == rhs.rows;
     } else {
