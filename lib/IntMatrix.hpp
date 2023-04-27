@@ -18,7 +18,7 @@ class IntMatrix {
 // Constructors
 public:
     IntMatrix() = default;
-    explicit IntMatrix(std::vector<std::vector<int>>& rhs); 
+    explicit IntMatrix(std::vector<std::vector<int>>& rhs);
     // TODO: check if defautt is valid solution here
     IntMatrix(const IntMatrix& rhs) = default;
     IntMatrix(const IntMatrix&& rhs) noexcept;
