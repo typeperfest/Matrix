@@ -118,7 +118,7 @@ IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
     for (size_t i = 0; i < this->rows; ++i) {
         for (size_t j = 0; j < rhs.columns; ++j) {
             // TODO: Attach function call to result
-            calculateMultipliedMember(i, j);
+            auto multiplicationResultMemnber = calculateMultipliedMember(rhs, i, j);
         }
     }
 }
