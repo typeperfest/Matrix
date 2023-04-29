@@ -1,5 +1,5 @@
 #include <iostream>
-#include "IntMatrix.hpp"
+#include "../lib/IntMatrix.h"
 
 int main(int argc, char* argv[]) {
     IntMatrix intmatr;

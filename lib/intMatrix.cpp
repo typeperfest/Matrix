@@ -1,55 +1,6 @@
-// typeperfest 2023
-#include <vector>
-#include <iostream>
-#include <algorithm>
+#include "IntMatrix.h"
 
-enum class Operation {
-    ADDITION,
-    SUBSTRACTION,
-    MULTIPLICATION
-};
-
-class IntMatrix {
-    std::vector<std::vector<int>> _data;
-    size_t rows, columns;
-    // TODO: implement funcion
-    int calculateMultipliedMember(const IntMatrix& other, const size_t row, const size_t column);
-
-// Constructors
-public:
-    IntMatrix() = default;
-    explicit IntMatrix(std::vector<std::vector<int>>& rhs);
-    // TODO: check if defautt is valid solution here
-    IntMatrix(const IntMatrix& rhs) = default;
-    IntMatrix(const IntMatrix&& rhs) noexcept;
-    IntMatrix(const size_t rows, const size_t columns) : 
-        _data(std::vector<std::vector<int>> ( rows, std::vector<int>(columns) )) {};
-
-// Assignation operators
-public:
-    IntMatrix& operator = (const IntMatrix& rhs);
-    IntMatrix& operator = (const IntMatrix&& rhs) noexcept; 
-
-// Getters & Setters
-public:
-    std::vector<int> getRow (const size_t index) const;
-    std::vector<int> getColumn (const size_t index) const;
-
-// Arithmetic operators
-public:
-    IntMatrix operator + (const IntMatrix& rhs);
-    IntMatrix operator - (const IntMatrix& rhs);
-    IntMatrix operator * (const IntMatrix& rhs);
-
-    bool operator == (const IntMatrix& rhs) const;
-    bool operator != (const IntMatrix& rhs) const;
-
-// Helper functions
-public:
-    bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
-};
-
-IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) :_data(std::vector<std::vector<int>>(0)) {
+IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(0)) {
     size_t firstSize = rhs[0].size();
     for (size_t i = 0; i < rhs.size(); ++i) {
         if (rhs[i].size() != firstSize) {
@@ -69,7 +20,7 @@ bool IntMatrix::isCompatible(const IntMatrix& rhs, const Operation operation) co
     }
 }
 
-IntMatrix::IntMatrix(const IntMatrix&& rhs) {
+IntMatrix::IntMatrix(const IntMatrix&& rhs) noexcept {
     this->_data = std::move(rhs._data);
     this->rows = rhs.rows;
     this->columns = rhs.columns;
@@ -82,7 +33,7 @@ IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
     return *this;
 }
 
-IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
+IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) noexcept {
     this->_data = std::move(rhs._data);
     this->rows = rhs.rows;
     this->rows = rhs.columns;
@@ -135,7 +86,17 @@ IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
     for (size_t i = 0; i < this->rows; ++i) {
         for (size_t j = 0; j < rhs.columns; ++j) {
             // TODO: Attach function call to result
-            auto multiplicationResultMemnber = calculateMultipliedMember(rhs, i, j);
+            auto multiplicationResultMember = calculateMultipliedMember(rhs, i, j);
+            result._data[i][j] = multiplicationResultMember;
         }
     }
+    return result;
+}
+
+int IntMatrix::calculateMultipliedMember(const IntMatrix& other, const size_t row, const size_t column) {
+    int result = 0;
+    for (size_t i = 0; i < row; ++i) {
+        result += this->_data[row][i] * other._data[column][i];
+    }
+    return result;
 }
