@@ -4,4 +4,6 @@ set(CXX_STANDARD_REQUIRED ON)
 
 project(playground)
 
+add_library(IntMatrix STATIC lib/IntMatrix.cpp)
+
 add_executable(main src/main.cpp)
