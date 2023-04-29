@@ -30,6 +30,11 @@ public:
     IntMatrix& operator = (const IntMatrix& rhs);
     IntMatrix& operator = (const IntMatrix&& rhs) noexcept; 
 
+// Getters & Setters
+public:
+    std::vector<int> getRow (const size_t index) const;
+    std::vector<int> getColumn (const size_t index) const;
+
 // Arithmetic operators
 public:
     IntMatrix operator + (const IntMatrix& rhs);
@@ -82,6 +87,18 @@ IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) {
     this->rows = rhs.rows;
     this->rows = rhs.columns;
     return *this;
+}
+
+std::vector<int> IntMatrix::getRow(const size_t index) const {
+    return _data[index];
+} 
+
+std::vector<int> IntMatrix::getColumn(const size_t index) const {
+    std::vector<int> result(this->rows);
+    for (int i = 0; i < this->rows; ++i) {
+        result[i] = _data[i][index];
+    }
+    return result;
 }
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
