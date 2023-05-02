@@ -12,6 +12,9 @@
         "string_view": "cpp",
         "unordered_map": "cpp",
         "variant": "cpp",
-        "__config": "cpp"
+        "__config": "cpp",
+        "system_error": "cpp",
+        "typeinfo": "cpp",
+        "filesystem": "cpp"
     }
 }
