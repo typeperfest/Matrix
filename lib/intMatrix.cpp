@@ -11,6 +11,18 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std
     this->columns = firstSize;
     this->rows = rhs.size();
 }
+
+IntMatrix::IntMatrix(std::initializer_list<std::initializer_list<int>> listLists) {
+    size_t firstSize = listLists.begin()->size();
+    for (auto& l : listLists) {
+        if (l.size() != firstSize) {
+            throw std::runtime_error("matrix does not fit rectangle format");
+        }
+    }
+    for (auto& l : listLists) {
+        _data.push_back(l);
+    }
+}
  
 bool IntMatrix::isCompatible(const IntMatrix& rhs, const Operation operation) const {
     if (operation != Operation::MULTIPLICATION) {
