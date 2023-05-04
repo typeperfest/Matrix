@@ -100,3 +100,17 @@ int IntMatrix::calculateMultipliedMember(const IntMatrix& other, const size_t ro
     }
     return result;
 }
+
+bool IntMatrix::operator == (const IntMatrix& rhs) const {
+    if (!isCompatible(rhs, Operation::COMPARISON)) {
+        throw std::runtime_error("matrixes are not compatible");
+    }
+    return this->_data == rhs._data;
+}
+
+bool IntMatrix::operator != (const IntMatrix& rhs) const {
+    if (!isCompatible(rhs, Operation::COMPARISON)) {
+        throw std::runtime_error("matrixes are not compatible");
+    }
+    return this->_data != rhs._data;
+}
