@@ -54,7 +54,7 @@ std::vector<int> IntMatrix::getColumn(const size_t index) const {
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
     if (!isCompatible(rhs, Operation::ADDITION)) {
-        std::runtime_error("addition operation cannot be performed on unmatching matrixes");
+        std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(*this);
     for (size_t i = 0; i < result._data.size(); ++i) {
@@ -67,7 +67,7 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
 
 IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
     if (!isCompatible(rhs, Operation::SUBSTRACTION)) {
-        std::runtime_error("substraction operation cannot be performed on unmatching matrixes");
+        std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(*this);
     for (size_t i = 0; i < result._data.size(); ++i) {
@@ -80,7 +80,7 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
 
 IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
     if (!isCompatible(rhs, Operation::MULTIPLICATION)) {
-        std::runtime_error("multiplication operation cannot be performed on unmatching matrixes");
+        std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(this->rows, rhs.columns);
     for (size_t i = 0; i < this->rows; ++i) {
