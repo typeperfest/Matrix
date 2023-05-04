@@ -6,6 +6,7 @@
 enum class Operation {
     ADDITION,
     SUBSTRACTION,
+    COMPARISON,
     MULTIPLICATION
 };
 
