@@ -41,7 +41,7 @@ IntMatrix::IntMatrix(const IntMatrix&& rhs) noexcept {
 }
 
 IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
-    _data = rhs._data;
+    _data = rhs._data; // TODO: error, it is copying
     this->rows = rhs.rows;
     this->rows = rhs.columns;
     return *this;
