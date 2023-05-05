@@ -1,15 +1,33 @@
 #include "IntMatrix.h"
 
+using namespace matrix;
+
 IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(0)) {
     size_t firstSize = rhs[0].size();
     for (size_t i = 0; i < rhs.size(); ++i) {
         if (rhs[i].size() != firstSize) {
-            throw std::runtime_error("matrix does not have rectangle format");
+            throw std::runtime_error("matrix does not fit rectangle format");
         }
     }
     this->_data = rhs;
     this->columns = firstSize;
     this->rows = rhs.size();
+}
+
+IntMatrix::IntMatrix(std::initializer_list<std::initializer_list<int>> listLists) {
+    size_t firstSize = listLists.begin()->size();
+    for (auto& l : listLists) {
+        if (l.size() != firstSize) {
+            throw std::runtime_error("matrix does not fit rectangle format");
+        }
+    }
+    size_t rowsCount = 0;
+    for (auto& l : listLists) {
+        _data.push_back(l);
+        ++rowsCount;
+    }
+    this->columns = firstSize;
+    this->rows = rowsCount;
 }
  
 bool IntMatrix::isCompatible(const IntMatrix& rhs, const Operation operation) const {
@@ -29,14 +47,14 @@ IntMatrix::IntMatrix(const IntMatrix&& rhs) noexcept {
 IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
     _data = rhs._data;
     this->rows = rhs.rows;
-    this->rows = rhs.columns;
+    this->columns = rhs.columns;
     return *this;
 }
 
 IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) noexcept {
     this->_data = std::move(rhs._data);
     this->rows = rhs.rows;
-    this->rows = rhs.columns;
+    this->columns = rhs.columns;
     return *this;
 }
 
@@ -71,7 +89,7 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
     }
     IntMatrix result(*this);
     for (size_t i = 0; i < result._data.size(); ++i) {
-        for (size_t j = 0; j < result._data.size(); ++j) {
+        for (size_t j = 0; j < result._data[i].size(); ++j) {
             result._data[i][j] -= rhs._data[i][j];
         }
     }
@@ -95,8 +113,11 @@ IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
 
 int IntMatrix::calculateMultipliedMember(const IntMatrix& other, const size_t row, const size_t column) {
     int result = 0;
-    for (size_t i = 0; i < row; ++i) {
-        result += this->_data[row][i] * other._data[column][i];
+    if (this->rows != other.columns) {
+        throw std::runtime_error("calculator error");
+    }
+    for (size_t i = 0; i < this->columns; ++i) {
+        result += this->_data[row][i] * other._data[i][column];
     }
     return result;
 }
@@ -113,4 +134,19 @@ bool IntMatrix::operator != (const IntMatrix& rhs) const {
         throw std::runtime_error("matrixes are not compatible");
     }
     return this->_data != rhs._data;
+}
+
+bool IntMatrix::print(std::ostream& out) const {
+    out << '[' << std::endl;
+    out << "rows " << this->rows << std::endl;
+    out << "columns " << this->columns << std::endl;
+    for (size_t i = 0; i < this->_data.size(); ++i) {
+        out << "\t[";
+        out << this->_data.front().front();
+        for (size_t j = 1; j < this->_data[i].size(); ++j) {
+            out << ' ' << this->_data[i][j];
+        }
+        out << ']' << std::endl;
+    }
+    out << ']' << std::endl;
 }

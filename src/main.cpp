@@ -2,6 +2,6 @@
 #include "../lib/IntMatrix.h"
 
 int main(int argc, char* argv[]) {
-    IntMatrix intmatr;
+    matrix::IntMatrix intmatr;
     return 0;
 }

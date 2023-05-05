@@ -10,6 +10,8 @@ enum class Operation {
     MULTIPLICATION
 };
 
+namespace matrix {
+
 class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
@@ -20,11 +22,12 @@ class IntMatrix {
 public:
     IntMatrix() = default;
     explicit IntMatrix(std::vector<std::vector<int>>& rhs);
-    // TODO: check if defautt is valid solution here
-    IntMatrix(const IntMatrix& rhs) = default;
+    explicit IntMatrix(std::initializer_list<std::initializer_list<int>> list);
+    // TODO: check if defautt is valid solution here // seems to be not
+    IntMatrix(const IntMatrix& rhs) : _data(rhs._data), columns(rhs.columns), rows(rhs.rows) {};
     IntMatrix(const IntMatrix&& rhs) noexcept;
     IntMatrix(const size_t rows, const size_t columns) : 
-        _data(std::vector<std::vector<int>> ( rows, std::vector<int>(columns) )) {};
+        _data(std::vector<std::vector<int>> ( rows, std::vector<int>(columns) )), columns(columns), rows(rows) {};
 
 // Assignation operators
 public:
@@ -48,4 +51,7 @@ public:
 // Helper functions
 public:
     bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
+    bool print(std::ostream& out) const;
 };
+
+} // end namespace matrix
