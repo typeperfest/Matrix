@@ -3,16 +3,17 @@
 #include <vector>
 
 typedef std::vector<std::vector<int>> vvecint;
+using namespace matrix;
 
 TEST(TEST01, FormatCheck) {
     vvecint v1{{1, 2, 3}, {1, 2}, {1, 2, 3}};
     vvecint v2{{1}, {1, 2}};
     vvecint v3{{}, {1}, {}};
     vvecint v4{{1, 2, 3, 4}, {1, 2, 3, 4}, {1}};
-    EXPECT_THROW(IntMatrix(v1), std::runtime_error);
-    EXPECT_THROW(IntMatrix(v2), std::runtime_error);
-    EXPECT_THROW(IntMatrix(v3), std::runtime_error);
-    EXPECT_THROW(IntMatrix(v4), std::runtime_error);
+    EXPECT_THROW(IntMatrix mv1(v1), std::runtime_error);
+    EXPECT_THROW(IntMatrix mv2(v2), std::runtime_error);
+    EXPECT_THROW(IntMatrix mv3(v3), std::runtime_error);
+    EXPECT_THROW(IntMatrix mv4(v4), std::runtime_error);
 
     EXPECT_THROW(IntMatrix m1({{1, 2, 3}, {1, 2}, {1, 2, 3}}), std::runtime_error);
     EXPECT_THROW(IntMatrix m2({{1}, {1, 2}}), std::runtime_error);
@@ -32,12 +33,12 @@ TEST(TEST02, BasicConstruction) {
     EXPECT_NO_THROW(IntMatrix m4({{1}, {1}, {1}, {1}, {1}}));
     EXPECT_NO_THROW(IntMatrix m4({{1, 2, 3, 4, 5, 6, 7}}));
 
-    IntMatrix mat3;
+    IntMatrix mat0;
     IntMatrix mat1(v1);
     IntMatrix mat2(mat1);
     IntMatrix mat3(std::move(mat2));
-    vvecint v3{{}};
-    IntMatrix mat2(v3);
+    vvecint v4{{}};
+    IntMatrix mat4(v3);
 }
 
 TEST(TEST03, BasicAssignation) {
