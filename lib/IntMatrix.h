@@ -50,6 +50,7 @@ public:
 // Helper functions
 public:
     bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
+    bool print(std::ostream& out) const;
 };
 
 } // end namespace matrix

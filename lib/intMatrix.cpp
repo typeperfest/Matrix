@@ -128,3 +128,16 @@ bool IntMatrix::operator != (const IntMatrix& rhs) const {
     }
     return this->_data != rhs._data;
 }
+
+bool IntMatrix::print(std::ostream& out) const {
+    out << '[' << std::endl;
+    for (size_t i = 0; i < this->_data.size(); ++i) {
+        out << "\t[";
+        out << this->_data.front().front();
+        for (size_t j = 1; j < this->_data.size(); ++j) {
+            out << ' ' << this->_data[i][j];
+        }
+        out << ']' << std::endl;
+    }
+    out << ']' << std::endl;
+}
