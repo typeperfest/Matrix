@@ -1,5 +1,7 @@
 #include "IntMatrix.h"
 
+using namespace matrix;
+
 IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(0)) {
     size_t firstSize = rhs[0].size();
     for (size_t i = 0; i < rhs.size(); ++i) {

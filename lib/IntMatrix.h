@@ -10,6 +10,8 @@ enum class Operation {
     MULTIPLICATION
 };
 
+namespace matrix {
+
 class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
@@ -49,3 +51,5 @@ public:
 public:
     bool isCompatible(const IntMatrix& rhs, const Operation operation) const;
 };
+
+} // end namespace matrix
