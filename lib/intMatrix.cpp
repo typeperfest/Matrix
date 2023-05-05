@@ -6,7 +6,7 @@ IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std
     size_t firstSize = rhs[0].size();
     for (size_t i = 0; i < rhs.size(); ++i) {
         if (rhs[i].size() != firstSize) {
-            throw std::runtime_error("matrix does not have rectangle format");
+            throw std::runtime_error("matrix does not fit rectangle format");
         }
     }
     this->_data = rhs;
