@@ -22,6 +22,7 @@ class IntMatrix {
 public:
     IntMatrix() = default;
     explicit IntMatrix(std::vector<std::vector<int>>& rhs);
+    explicit IntMatrix(std::initializer_list<std::initializer_list<int>> list);
     // TODO: check if defautt is valid solution here
     IntMatrix(const IntMatrix& rhs) = default;
     IntMatrix(const IntMatrix&& rhs) noexcept;
