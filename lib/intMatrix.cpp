@@ -76,7 +76,7 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
     }
     IntMatrix result(*this);
     for (size_t i = 0; i < result._data.size(); ++i) {
-        for (size_t j = 0; j < result._data.size(); ++j) {
+        for (size_t j = 0; j < result._data.front().size(); ++j) {
             result._data[i][j] += rhs._data[i][j];
         }
     }
@@ -89,7 +89,7 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
     }
     IntMatrix result(*this);
     for (size_t i = 0; i < result._data.size(); ++i) {
-        for (size_t j = 0; j < result._data[i].size(); ++j) {
+        for (size_t j = 0; j < result._data.front().size(); ++j) {
             result._data[i][j] -= rhs._data[i][j];
         }
     }
