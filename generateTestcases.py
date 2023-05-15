@@ -2,8 +2,8 @@ import sys;
 from random import randint
 import numpy as np
 
-INT_MAX = pow(2, 15) - 1
-INT_MIN = -pow(2, 15)
+INT_MAX = pow(2, 8) - 1
+INT_MIN = -pow(2, 8)
 
 def generateOperands(rows:int, columns:int, operation:chr):
     global firstOperandMatrix
@@ -38,7 +38,7 @@ def translateMatrix(matrix, name:str):
     resultStr += '{'
     for i in range(len(matrix[-1]) - 1):
         resultStr += (str(matrix[-1][i]) + ", ")
-    resultStr += (str(matrix[-1][-i]) + "}")
+    resultStr += (str(matrix[-1][-1]) + "}")
     resultStr += "};\n"
     return resultStr
 
@@ -51,6 +51,8 @@ def outTestCaseToFile(testCaseNumber:int):
         outFile.write(translateMatrix(firstOperandMatrix, firstNameGenerated))
         outFile.write(translateMatrix(secondOperandMatrix, secondNameGenerated))
         outFile.write(translateMatrix(resultMatrix, resultNameGenerated))
+        # outFile.write(str(resultMatrix.view()))
+        # outFile.write(str("\n"))
         outFile.write("EXPECT_EQ(" + str(firstNameGenerated) + ' '
                        + operationChr + ' ' + str(secondNameGenerated) + ", " + str(resultNameGenerated) + ");\n")
 
@@ -59,6 +61,8 @@ def runGeneration(rows:int, columns:int, operation:chr, testCaseCount:int):
         generateOperands(rows, columns, operation)
         generateResult(operation)
         outTestCaseToFile(i)
+    with open("generatedTests.txt", "a") as outFile:
+        outFile.write("// Generation done by ./generateTestcases.py")
 
 def printHelp():
     print("Description:")
