@@ -1,4 +1,4 @@
-set(cmake_minimum_required 3.14)
+cmake_minimum_required(VERSION 3.14)
 set(CMAKE_CXX_STANDARD 17)
 set(CXX_STANDARD_REQUIRED ON)
 
@@ -14,18 +14,23 @@ FetchContent_MakeAvailable(googletest)
 
 add_library(IntMatrix STATIC lib/IntMatrix.cpp)
 
+string(APPEND CMAKE_CXX_FLAGS " -Wall")
+if (BUILD_X86_WITH_SSE)
+    string(APPEND CMAKE_CXX_FLAGS " -D SIMD_EXTENSION_ENABLED")
+endif()
+
 add_executable(main src/main.cpp)
 
 # Add testing features
 enable_testing()
 add_executable(
-    test
+    tests
     tests/test.cpp
 )
 target_link_libraries(
-    test
+    tests
     GTest::gtest_main
     IntMatrix
 )
 include(GoogleTest)
-gtest_discover_tests(test)
+gtest_discover_tests(tests)
