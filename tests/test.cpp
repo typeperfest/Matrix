@@ -114,6 +114,10 @@ TEST(TEST05, ArithmeticOperations) {
     IntMatrix mat2(v2);
     IntMatrix matr(vr);
     EXPECT_EQ(mat1 + mat2, matr);
+    IntMatrix rectMat1({{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}});
+    IntMatrix rectMat2({{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}});
+    IntMatrix rectMat3({{2, 4, 6, 8}, {2, 4, 6, 8}, {2, 4, 6, 8}});
+    EXPECT_EQ(rectMat1 + rectMat2, rectMat3);
     IntMatrix rowMat1({{7, 7, 7}});
     IntMatrix rowMat2({{3, 3, 3}});
     IntMatrix rowMat3({{4, 4, 4}});
