@@ -1,5 +1,9 @@
 #include "IntMatrix.h"
 
+#ifdef SIMD_EXTENSION_ENABLED
+    #include "immintrin.h"
+#endif
+
 using namespace matrix;
 
 IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(0)) {
@@ -75,11 +79,15 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
         std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(*this);
+#ifndef SIMD_EXTENSION_ENABLED
     for (size_t i = 0; i < result._data.size(); ++i) {
         for (size_t j = 0; j < result._data.size(); ++j) {
             result._data[i][j] += rhs._data[i][j];
         }
     }
+#else
+    // emplement here
+#endif
     return result;
 }
 
@@ -88,11 +96,15 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
         std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(*this);
+#ifndef SIMD_EXTENSION_ENABLED
     for (size_t i = 0; i < result._data.size(); ++i) {
         for (size_t j = 0; j < result._data[i].size(); ++j) {
             result._data[i][j] -= rhs._data[i][j];
         }
     }
+#else
+    // implement here
+#endif
     return result;
 }
 
@@ -101,6 +113,7 @@ IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
         std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(this->rows, rhs.columns);
+#ifndef SIMD_EXTENSION_ENABLED
     for (size_t i = 0; i < this->rows; ++i) {
         for (size_t j = 0; j < rhs.columns; ++j) {
             // TODO: Attach function call to result
@@ -108,6 +121,9 @@ IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
             result._data[i][j] = multiplicationResultMember;
         }
     }
+#else 
+    // implement here
+#endif
     return result;
 }
 
