@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
+#define SIMD_EXTENSION_ENABLED
+
 enum class Operation {
     ADDITION,
     SUBSTRACTION,
