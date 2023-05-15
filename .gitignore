@@ -34,4 +34,4 @@
 build/*
 .vscode/*
 
-generatedTests.py
+generatedTests.txt
