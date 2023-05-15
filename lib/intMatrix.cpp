@@ -86,7 +86,7 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
         }
     }
 #else
-    // emplement here
+    
 #endif
     return result;
 }
