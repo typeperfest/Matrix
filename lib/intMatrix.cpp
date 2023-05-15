@@ -6,7 +6,8 @@
 
 using namespace matrix;
 
-IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(0)) {
+IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(rhs.size(),
+                                                                 std::vector<int>(rhs.front().size()))) {
     size_t firstSize = rhs[0].size();
     for (size_t i = 0; i < rhs.size(); ++i) {
         if (rhs[i].size() != firstSize) {
@@ -27,7 +28,7 @@ IntMatrix::IntMatrix(std::initializer_list<std::initializer_list<int>> listLists
     }
     size_t rowsCount = 0;
     for (auto& l : listLists) {
-        _data.push_back(l);
+        _data.emplace_back(l);
         ++rowsCount;
     }
     this->columns = firstSize;
@@ -42,12 +43,6 @@ bool IntMatrix::isCompatible(const IntMatrix& rhs, const Operation operation) co
     }
 }
 
-IntMatrix::IntMatrix(const IntMatrix&& rhs) noexcept {
-    this->_data = std::move(rhs._data);
-    this->rows = rhs.rows;
-    this->columns = rhs.columns;
-}
-
 IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
     _data = rhs._data;
     this->rows = rhs.rows;
@@ -55,7 +50,7 @@ IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
     return *this;
 }
 
-IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) noexcept {
+IntMatrix& IntMatrix::operator = (IntMatrix&& rhs) noexcept {
     this->_data = std::move(rhs._data);
     this->rows = rhs.rows;
     this->columns = rhs.columns;
@@ -138,7 +133,6 @@ IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
 #ifndef SIMD_EXTENSION_ENABLED
     for (size_t i = 0; i < this->rows; ++i) {
         for (size_t j = 0; j < rhs.columns; ++j) {
-            // TODO: Attach function call to result
             auto multiplicationResultMember = calculateMultipliedMember(rhs, i, j);
             result._data[i][j] = multiplicationResultMember;
         }
@@ -174,13 +168,13 @@ bool IntMatrix::operator != (const IntMatrix& rhs) const {
     return this->_data != rhs._data;
 }
 
-bool IntMatrix::print(std::ostream& out) const {
+void IntMatrix::print(std::ostream& out) const {
     out << '[' << std::endl;
     out << "rows " << this->rows << std::endl;
     out << "columns " << this->columns << std::endl;
     for (size_t i = 0; i < this->_data.size(); ++i) {
         out << "\t[";
-        out << this->_data.front().front();
+        out << this->_data[i].front();
         for (size_t j = 1; j < this->_data[i].size(); ++j) {
             out << ' ' << this->_data[i][j];
         }
