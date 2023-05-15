@@ -79,15 +79,37 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
         std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(*this);
-#ifndef SIMD_EXTENSION_ENABLED
     for (size_t i = 0; i < result._data.size(); ++i) {
+#ifndef SIMD_EXTENSION_ENABLED
         for (size_t j = 0; j < result._data.front().size(); ++j) {
             result._data[i][j] += rhs._data[i][j];
         }
-    }
-#else
-    
+#else  
+        // according to suffix 'u'
+        // >> mem_addr does not need to be aligned on any particular boundary
+        // Was Intel meant data should be aligned? 
+        __attribute__((aligned(16))) __m128i* currPackedLhsPtr = (__m128i*)this->_data[i].data();
+        __attribute__((aligned(16))) __m128i* currPackedRhsPtr = (__m128i*)rhs._data[i].data();
+        __attribute__((aligned(16))) __m128i* currPackedResultPtr = (__m128i*)result._data[i].data(); 
+        for (size_t j = 0; j < result._data.front().size() >> 2; j += 4) {
+            __m128i rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
+            __m128i lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
+            __m128i resPack = _mm_add_epi32(rhsPack, lhsPack);
+            _mm_storeu_si128(currPackedResultPtr, resPack);
+            currPackedLhsPtr += 4;
+            currPackedRhsPtr += 4;
+            currPackedResultPtr += 4;
+        }
+        __m128i rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
+        __m128i lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
+        __m128i resPack = _mm_add_epi32(rhsPack, lhsPack);
+        // for (size_t j = 0; j < (result._data.front().size() & 0x3); ++j) {
+        //     _mm_storeu_si32(currPackedResultPtr, resPack);
+        //     resPack >>= 32;
+        //     currPackedResultPtr += 4;
+        // }
 #endif
+    }
     return result;
 }
 
