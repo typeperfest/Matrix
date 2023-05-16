@@ -1,8 +1,13 @@
 #include "IntMatrix.h"
 
+#ifdef SIMD_EXTENSION_ENABLED
+    #include "immintrin.h"
+#endif
+
 using namespace matrix;
 
-IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(0)) {
+IntMatrix::IntMatrix(std::vector<std::vector<int>>& rhs) : _data(std::vector<std::vector<int>>(rhs.size(),
+                                                                 std::vector<int>(rhs.front().size()))) {
     size_t firstSize = rhs[0].size();
     for (size_t i = 0; i < rhs.size(); ++i) {
         if (rhs[i].size() != firstSize) {
@@ -23,7 +28,7 @@ IntMatrix::IntMatrix(std::initializer_list<std::initializer_list<int>> listLists
     }
     size_t rowsCount = 0;
     for (auto& l : listLists) {
-        _data.push_back(l);
+        _data.emplace_back(l);
         ++rowsCount;
     }
     this->columns = firstSize;
@@ -38,12 +43,6 @@ bool IntMatrix::isCompatible(const IntMatrix& rhs, const Operation operation) co
     }
 }
 
-IntMatrix::IntMatrix(const IntMatrix&& rhs) noexcept {
-    this->_data = std::move(rhs._data);
-    this->rows = rhs.rows;
-    this->columns = rhs.columns;
-}
-
 IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
     _data = rhs._data;
     this->rows = rhs.rows;
@@ -51,7 +50,7 @@ IntMatrix& IntMatrix::operator = (const IntMatrix& rhs) {
     return *this;
 }
 
-IntMatrix& IntMatrix::operator = (const IntMatrix&& rhs) noexcept {
+IntMatrix& IntMatrix::operator = (IntMatrix&& rhs) noexcept {
     this->_data = std::move(rhs._data);
     this->rows = rhs.rows;
     this->columns = rhs.columns;
@@ -70,16 +69,65 @@ std::vector<int> IntMatrix::getColumn(const size_t index) const {
     return result;
 }
 
+template<bool isComplementOfTwo>
+void matrix::IntMatrix::addMatrixByMembersCode(const IntMatrix& rhs, const IntMatrix* result) {
+    // according to suffix 'u'
+    // >> mem_addr does not need to be aligned on any particular boundary
+    // Was Intel meant data does not need to be aligned? 
+    for (size_t i = 0; i < result->_data.size(); ++i) {
+        auto currLhsDataPtr = this->_data[i].data();
+        auto currRhsDataPtr = rhs._data[i].data();
+        auto currResultDataPtr = result->_data[i].data(); 
+        __attribute__((aligned(16))) __m128i* currPackedLhsPtr = (__m128i*)currLhsDataPtr;
+        __attribute__((aligned(16))) __m128i* currPackedRhsPtr = (__m128i*)currRhsDataPtr;
+        __attribute__((aligned(16))) __m128i* currPackedResultPtr = (__m128i*)currResultDataPtr; 
+        __m128i rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
+        __m128i lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
+        __m128i resPack;
+        for (size_t j = 0; j < result->_data.front().size() >> 2; ++j) {
+            if constexpr (isComplementOfTwo) {
+                resPack = _mm_sub_epi32(lhsPack, rhsPack);
+            } else {
+                resPack = _mm_add_epi32(rhsPack, lhsPack);
+            }
+            _mm_storeu_si128(currPackedResultPtr, resPack);
+            currLhsDataPtr += sizeof(__m128i) / sizeof(int); // 4
+            currRhsDataPtr += sizeof(__m128i) / sizeof(int);
+            currResultDataPtr += sizeof(__m128i) / sizeof(int);
+            currPackedLhsPtr = (__m128i*)currLhsDataPtr;
+            currPackedRhsPtr = (__m128i*)currRhsDataPtr;
+            currPackedResultPtr = (__m128i*)currResultDataPtr; 
+            rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
+            lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
+        }
+        if constexpr (isComplementOfTwo) {
+            resPack = _mm_sub_epi32(lhsPack, rhsPack);
+        } else {
+            resPack = _mm_add_epi32(rhsPack, lhsPack);
+        }
+        for (size_t j = 0; j < (result->_data.front().size() % 4); ++j) {
+            _mm_storeu_si32((__m128i*)currResultDataPtr, resPack);
+            resPack = _mm_bsrli_si128(resPack, sizeof(int));
+            currResultDataPtr += 1;
+        }
+    }
+}
+
+
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
     if (!isCompatible(rhs, Operation::ADDITION)) {
         std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(*this);
+#ifndef SIMD_EXTENSION_ENABLED
     for (size_t i = 0; i < result._data.size(); ++i) {
         for (size_t j = 0; j < result._data.front().size(); ++j) {
             result._data[i][j] += rhs._data[i][j];
         }
     }
+#else  
+    addMatrixByMembersCode<false>(rhs, &result);
+#endif
     return result;
 }
 
@@ -88,11 +136,15 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
         std::runtime_error("matrixes are not compatible");
     }
     IntMatrix result(*this);
+#ifndef SIMD_EXTENSION_ENABLED
     for (size_t i = 0; i < result._data.size(); ++i) {
         for (size_t j = 0; j < result._data.front().size(); ++j) {
             result._data[i][j] -= rhs._data[i][j];
         }
     }
+#else
+    addMatrixByMembersCode<true>(rhs, &result);
+#endif
     return result;
 }
 
@@ -103,7 +155,6 @@ IntMatrix IntMatrix::operator * (const IntMatrix& rhs) {
     IntMatrix result(this->rows, rhs.columns);
     for (size_t i = 0; i < this->rows; ++i) {
         for (size_t j = 0; j < rhs.columns; ++j) {
-            // TODO: Attach function call to result
             auto multiplicationResultMember = calculateMultipliedMember(rhs, i, j);
             result._data[i][j] = multiplicationResultMember;
         }
@@ -136,13 +187,13 @@ bool IntMatrix::operator != (const IntMatrix& rhs) const {
     return this->_data != rhs._data;
 }
 
-bool IntMatrix::print(std::ostream& out) const {
+void IntMatrix::print(std::ostream& out) const {
     out << '[' << std::endl;
     out << "rows " << this->rows << std::endl;
     out << "columns " << this->columns << std::endl;
     for (size_t i = 0; i < this->_data.size(); ++i) {
         out << "\t[";
-        out << this->_data.front().front();
+        out << this->_data[i].front();
         for (size_t j = 1; j < this->_data[i].size(); ++j) {
             out << ' ' << this->_data[i][j];
         }
