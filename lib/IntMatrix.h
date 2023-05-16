@@ -16,7 +16,10 @@ class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
     // TODO: implement funcion
+private:
     int calculateMultipliedMember(const IntMatrix& other, const size_t row, const size_t column);
+    template<bool isComplementOfTwo>
+    void addMatrixByMembersCode(const IntMatrix& rhs, const IntMatrix* result);
 
 // Constructors
 public:
