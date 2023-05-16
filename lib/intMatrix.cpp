@@ -69,6 +69,51 @@ std::vector<int> IntMatrix::getColumn(const size_t index) const {
     return result;
 }
 
+template<bool isComplementOfTwo>
+void matrix::IntMatrix::addMatrixByMembersCode(const IntMatrix& rhs, const IntMatrix* result) {
+    // according to suffix 'u'
+    // >> mem_addr does not need to be aligned on any particular boundary
+    // Was Intel meant data does not need to be aligned? 
+    for (size_t i = 0; i < result->_data.size(); ++i) {
+        auto currLhsDataPtr = this->_data[i].data();
+        auto currRhsDataPtr = rhs._data[i].data();
+        auto currResultDataPtr = result->_data[i].data(); 
+        __attribute__((aligned(16))) __m128i* currPackedLhsPtr = (__m128i*)currLhsDataPtr;
+        __attribute__((aligned(16))) __m128i* currPackedRhsPtr = (__m128i*)currRhsDataPtr;
+        __attribute__((aligned(16))) __m128i* currPackedResultPtr = (__m128i*)currResultDataPtr; 
+        __m128i rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
+        __m128i lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
+        __m128i resPack;
+        for (size_t j = 0; j < result->_data.front().size() >> 2; ++j) {
+            if constexpr (isComplementOfTwo) {
+                resPack = _mm_sub_epi32(lhsPack, rhsPack);
+            } else {
+                resPack = _mm_add_epi32(rhsPack, lhsPack);
+            }
+            _mm_storeu_si128(currPackedResultPtr, resPack);
+            currLhsDataPtr += sizeof(__m128i) / sizeof(int); // 4
+            currRhsDataPtr += sizeof(__m128i) / sizeof(int);
+            currResultDataPtr += sizeof(__m128i) / sizeof(int);
+            currPackedLhsPtr = (__m128i*)currLhsDataPtr;
+            currPackedRhsPtr = (__m128i*)currRhsDataPtr;
+            currPackedResultPtr = (__m128i*)currResultDataPtr; 
+            rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
+            lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
+        }
+        if constexpr (isComplementOfTwo) {
+            resPack = _mm_sub_epi32(lhsPack, rhsPack);
+        } else {
+            resPack = _mm_add_epi32(rhsPack, lhsPack);
+        }
+        for (size_t j = 0; j < (result->_data.front().size() % 4); ++j) {
+            _mm_storeu_si32((__m128i*)currResultDataPtr, resPack);
+            resPack = _mm_bsrli_si128(resPack, sizeof(int));
+            currResultDataPtr += 1;
+        }
+    }
+}
+
+
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
     if (!isCompatible(rhs, Operation::ADDITION)) {
         std::runtime_error("matrixes are not compatible");
