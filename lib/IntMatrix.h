@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
+namespace matrix {
+
 enum class Operation {
     ADDITION,
     SUBSTRACTION,
@@ -10,16 +12,14 @@ enum class Operation {
     MULTIPLICATION
 };
 
-namespace matrix {
-
 class IntMatrix {
     std::vector<std::vector<int>> _data;
     size_t rows, columns;
     // TODO: implement funcion
 private:
     int calculateMultipliedMember(const IntMatrix& other, const size_t row, const size_t column);
-    template<bool isComplementOfTwo>
-    void addMatrixByMembersCode(const IntMatrix& rhs, const IntMatrix* result);
+    template<Operation operation>
+    void SSEperformOperation(const IntMatrix& rhs, const IntMatrix* result);
 
 // Constructors
 public:

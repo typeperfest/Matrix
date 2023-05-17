@@ -69,8 +69,8 @@ std::vector<int> IntMatrix::getColumn(const size_t index) const {
     return result;
 }
 
-template<bool isComplementOfTwo>
-void matrix::IntMatrix::addMatrixByMembersCode(const IntMatrix& rhs, const IntMatrix* result) {
+template<Operation operation>
+void matrix::IntMatrix::SSEperformOperation(const IntMatrix& rhs, const IntMatrix* result) {
     // according to suffix 'u'
     // >> mem_addr does not need to be aligned on any particular boundary
     // Was Intel meant data does not need to be aligned? 
@@ -85,9 +85,9 @@ void matrix::IntMatrix::addMatrixByMembersCode(const IntMatrix& rhs, const IntMa
         __m128i lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
         __m128i resPack;
         for (size_t j = 0; j < result->_data.front().size() >> 2; ++j) {
-            if constexpr (isComplementOfTwo) {
+            if constexpr (operation == Operation::SUBSTRACTION) {
                 resPack = _mm_sub_epi32(lhsPack, rhsPack);
-            } else {
+            } else if (operation == Operation::ADDITION) {
                 resPack = _mm_add_epi32(rhsPack, lhsPack);
             }
             _mm_storeu_si128(currPackedResultPtr, resPack);
@@ -100,9 +100,9 @@ void matrix::IntMatrix::addMatrixByMembersCode(const IntMatrix& rhs, const IntMa
             rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
             lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
         }
-        if constexpr (isComplementOfTwo) {
+        if constexpr (operation == Operation::SUBSTRACTION) {
             resPack = _mm_sub_epi32(lhsPack, rhsPack);
-        } else {
+        } else if (operation == Operation::ADDITION) {
             resPack = _mm_add_epi32(rhsPack, lhsPack);
         }
         for (size_t j = 0; j < (result->_data.front().size() % 4); ++j) {
@@ -126,7 +126,7 @@ IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
         }
     }
 #else  
-    addMatrixByMembersCode<false>(rhs, &result);
+    SSEperformOperation<Operation::ADDITION>(rhs, &result);
 #endif
     return result;
 }
@@ -143,7 +143,7 @@ IntMatrix IntMatrix::operator - (const IntMatrix& rhs) {
         }
     }
 #else
-    addMatrixByMembersCode<true>(rhs, &result);
+    SSEperformOperation<Operation::SUBSTRACTION>(rhs, &result);
 #endif
     return result;
 }
