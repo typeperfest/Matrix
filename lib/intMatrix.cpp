@@ -69,8 +69,9 @@ std::vector<int> IntMatrix::getColumn(const size_t index) const {
     return result;
 }
 
+#ifdef SIMD_EXTENSION_ENABLED
 template<Operation operation>
-void matrix::IntMatrix::SSEperformOperation(const IntMatrix& rhs, const IntMatrix* result) {
+void IntMatrix::SSEperformOperation(const IntMatrix& rhs, const IntMatrix* result) {
     // according to suffix 'u'
     // >> mem_addr does not need to be aligned on any particular boundary
     // Was Intel meant data does not need to be aligned? 
@@ -112,6 +113,7 @@ void matrix::IntMatrix::SSEperformOperation(const IntMatrix& rhs, const IntMatri
         }
     }
 }
+#endif
 
 
 IntMatrix IntMatrix::operator + (const IntMatrix& rhs) {
