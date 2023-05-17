@@ -1,5 +1,6 @@
-# Matrix.h with SSE extension
-Matrix.h uses SSE extension to speed up ADDITIIN and SUBSTRACTION operations
+# IntMatrix.h with SSE extension
+IntMatrix.h is simple std::vector<std::vector<int>> wrapper to represent matrixes.
+Matrix.h uses SSE extension to speed up addition and substraction operations.
 
 ### Build
 #### Mac M1
