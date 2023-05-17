@@ -1,5 +1,5 @@
-# Matrix.h with SSE exstension
-Matrix.h uses SSE exstension to speed up ADDITIIN and SUBSTRACTION operations
+# Matrix.h with SSE extension
+Matrix.h uses SSE extension to speed up ADDITIIN and SUBSTRACTION operations
 
 ### Build
 #### Mac M1
