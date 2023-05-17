@@ -69,7 +69,7 @@ def printHelp():
     print("\tSimple script to generate valid random testcase for matrix::IntMatrix emplmented by this repository.")
     print("\tReady to copy-paste in test source files.")
     print("Usage:")
-    print("\tpython3 generateMatrix.py <rows:int> <columns:int> <operation:chr> <testCasesNumber>")
+    print("\tpython3 generateMatrix.py <rows:int> <columns:int> <operation:chr> <testCasesNumber:int>")
     print("\t\tWhere <operation>={m|a|s} stands for:")
     print("\t\t\t m - multiplication")
     print("\t\t\t a - addition")
