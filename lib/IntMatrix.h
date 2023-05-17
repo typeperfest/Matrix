@@ -1,7 +1,6 @@
 // typeperfest 2023
 #include <vector>
 #include <iostream>
-#include <algorithm>
 
 namespace matrix {
 
