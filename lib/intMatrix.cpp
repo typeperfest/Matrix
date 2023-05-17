@@ -78,9 +78,9 @@ void matrix::IntMatrix::addMatrixByMembersCode(const IntMatrix& rhs, const IntMa
         auto currLhsDataPtr = this->_data[i].data();
         auto currRhsDataPtr = rhs._data[i].data();
         auto currResultDataPtr = result->_data[i].data(); 
-        __attribute__((aligned(16))) __m128i* currPackedLhsPtr = (__m128i*)currLhsDataPtr;
-        __attribute__((aligned(16))) __m128i* currPackedRhsPtr = (__m128i*)currRhsDataPtr;
-        __attribute__((aligned(16))) __m128i* currPackedResultPtr = (__m128i*)currResultDataPtr; 
+        __m128i* currPackedLhsPtr = (__m128i*)currLhsDataPtr;
+        __m128i* currPackedRhsPtr = (__m128i*)currRhsDataPtr;
+        __m128i* currPackedResultPtr = (__m128i*)currResultDataPtr; 
         __m128i rhsPack = _mm_lddqu_si128(currPackedRhsPtr);
         __m128i lhsPack = _mm_lddqu_si128(currPackedLhsPtr);
         __m128i resPack;
