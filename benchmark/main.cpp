@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "../lib/IntMatrix.h"
+#include <chrono>
+#include "../src/IntMatrix.h"
 
 const int MATRIX_ROW_SIZE = 1000;
 
-int main(int argc, char* argv[]) {
+int main() {
 #ifdef SIMD_EXTENSION_ENABLED
     std::cout << "SIMD_EXTESION_ENABLED is defined" << std::endl;
 #else
@@ -33,6 +34,11 @@ int main(int argc, char* argv[]) {
     }
     matrix::IntMatrix matrix1(rawMatrix1);
     matrix::IntMatrix matrix2(rawMatrix2);
+    auto start = std::chrono::high_resolution_clock::now();
     [[maybe_unused]] auto result = matrix1 + matrix2;
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> runningTime = end - start;
+    std::cout << "Addition of two 1000x1000 int matrixes was running during [" \
+        << runningTime.count() << "] milliseconds\n";
     return 0;
 }

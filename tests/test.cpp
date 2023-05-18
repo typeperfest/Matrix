@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../lib/IntMatrix.h"
+#include "../src/IntMatrix.h"
 #include <vector>
 
 typedef std::vector<std::vector<int>> vvecint;
