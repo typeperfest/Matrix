@@ -19,13 +19,15 @@ endif()
 
 add_library(IntMatrix STATIC src/IntMatrix.cpp)
 
+add_library(IntMatrixO3 STATIC src/IntMatrix.cpp)
+target_compile_options(IntMatrixO3 PUBLIC "-O3")
+
 string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wshadow")
 
 if(BUILD_BENCHMARK)
     include(benchmark/benchmark.cmake)
 endif()
 
-# Add testing features
 if (BUILD_TESTS)
     enable_testing()
     add_executable(
