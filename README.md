@@ -34,3 +34,13 @@ See this
 ### Testing
 You could generate your own tests using script generateTestcases.py. To see usage run without parameters.
 Paste generated tests into tests/test.cpp and build.
+
+### Benchmarking
+The following scripts build two versions of static library Matrix.h with support of custom SSE and without it. As second step, it builds three executables:
+1. With -O3 and with custom SSE support
+2. With -O3 and without custom SSE support
+3. Without -O3 and without custom SSE support
+As third step all executables run with time recording functions.
+```
+./scripts/runBenchMark.sh
+```
