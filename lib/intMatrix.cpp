@@ -63,7 +63,7 @@ std::vector<int> IntMatrix::getRow(const size_t index) const {
 
 std::vector<int> IntMatrix::getColumn(const size_t index) const {
     std::vector<int> result(this->rows);
-    for (int i = 0; i < this->rows; ++i) {
+    for (size_t i = 0; i < this->rows; ++i) {
         result[i] = _data[i][index];
     }
     return result;
