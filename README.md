@@ -6,7 +6,8 @@ IntMatrix.h uses SSE extension to speed up addition and substraction operations.
 #### Mac M1
 - brew for x86 is required
 - cmake installed under x86 brew is required
-To build under Rosetta 2 with SSE extension enabled. Compiler adds required defintions automatically.
+
+To build under Rosetta 2 with SSE extension enabled. Script adds required defintions automatically.
 ```bash
 ./scripts/build_x86.sh
 ```
