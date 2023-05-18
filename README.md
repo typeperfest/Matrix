@@ -1,6 +1,6 @@
 # IntMatrix.h with SSE extension
 IntMatrix.h is simple std::vector<std::vector<int>> wrapper to represent matrixes.
-Matrix.h uses SSE extension to speed up addition and substraction operations.
+IntMatrix.h uses SSE extension to speed up addition and substraction operations.
 
 ### Build
 #### Mac M1
@@ -36,7 +36,7 @@ You could generate your own tests using script generateTestcases.py. To see usag
 Paste generated tests into tests/test.cpp and build.
 
 ### Benchmarking
-The following script build two versions of static library Matrix.h with support of custom SSE and without it. As second step, it builds three executables:
+The following script build two versions of static library IntMatrix.h with support of custom SSE and without it. As second step, it builds three executables:
 1. With -O3 and with custom SSE support
 2. With -O3 and without custom SSE support
 3. Without -O3 and without custom SSE support
