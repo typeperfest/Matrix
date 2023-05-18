@@ -12,25 +12,40 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
-add_library(IntMatrix STATIC lib/IntMatrix.cpp)
-
-string(APPEND CMAKE_CXX_FLAGS " -Wall")
-if (BUILD_X86_WITH_SSE)
-    string(APPEND CMAKE_CXX_FLAGS " -D SIMD_EXTENSION_ENABLED")
+if (BUILD_X86_WITH_SSE OR BUILD_BENCHMARK)
+    add_library(IntMatrixSSE STATIC lib/IntMatrix.cpp)
+    target_compile_definitions(IntMatrixSSE PUBLIC "SIMD_EXTENSION_ENABLED")
 endif()
 
-add_executable(main src/main.cpp)
+add_library(IntMatrix STATIC lib/IntMatrix.cpp)
+
+string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wshadow")
+
+if(BUILD_BENCHMARK)
+    include(benchmark/benchmark.cmake)
+endif()
 
 # Add testing features
-enable_testing()
-add_executable(
-    tests
-    tests/test.cpp
-)
-target_link_libraries(
-    tests
-    GTest::gtest_main
-    IntMatrix
-)
-include(GoogleTest)
-gtest_discover_tests(tests)
+if (BUILD_TESTS)
+    enable_testing()
+    add_executable(
+        tests
+        tests/test.cpp
+    )
+    if (BUILD_X86_WITH_SSE)
+        target_link_libraries(
+            tests
+            GTest::gtest_main
+            IntMatrixSSE
+        )
+    else()
+        target_link_libraries(
+            tests
+            GTest::gtest_main
+            IntMatrix
+        )
+    endif()
+    include(GoogleTest)
+    gtest_discover_tests(tests)
+endif()
+
