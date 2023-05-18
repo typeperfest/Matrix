@@ -13,11 +13,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 if (BUILD_X86_WITH_SSE OR BUILD_BENCHMARK)
-    add_library(IntMatrixSSE STATIC lib/IntMatrix.cpp)
+    add_library(IntMatrixSSE STATIC src/IntMatrix.cpp)
     target_compile_definitions(IntMatrixSSE PUBLIC "SIMD_EXTENSION_ENABLED")
 endif()
 
-add_library(IntMatrix STATIC lib/IntMatrix.cpp)
+add_library(IntMatrix STATIC src/IntMatrix.cpp)
 
 string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wshadow")
 

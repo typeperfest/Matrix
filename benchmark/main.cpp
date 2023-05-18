@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <chrono>
-#include "../lib/IntMatrix.h"
+#include "../src/IntMatrix.h"
 
 const int MATRIX_ROW_SIZE = 1000;
 
