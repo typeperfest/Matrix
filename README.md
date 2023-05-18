@@ -44,9 +44,11 @@ The following script build two versions of static library IntMatrix.h with suppo
 
 As third step all executables run with time recording functions.
 ```
-./scripts/runBenchMark.sh
+./scripts/runBenchmark.sh
 ```
 
 ### Сonclusions
 1. Custom SSE twices perfomance comparing to code without compiler optimizations
 2. -O3 flag still gives more perfomance because compiler seems to be using AVX
+
+![./runBenchmark.sh results](./img/results.png)
